@@ -29,5 +29,21 @@ public class ClientService {
 				.orElseThrow(() -> new ResourceNotFoundException("Client not found!"));
 		return new ClientDTO(client);
 	}
+
+	@Transactional
+	public ClientDTO insert(ClientDTO clientDTO) {		
+		Client client = new Client();		
+		copyToModel(clientDTO, client);		
+		client = clientRepository.save(client);		
+		return new ClientDTO(client);
+	}
+
+	private void copyToModel(ClientDTO clientDTO, Client client) {
+		client.setName(clientDTO.getName());
+		client.setCpf(clientDTO.getCpf());
+		client.setIncome(clientDTO.getIncome());
+		client.setBirthDate(clientDTO.getBirthDate());
+		client.setChildren(clientDTO.getChildren());
+	}
 	
 }
