@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tyandrerboldt.bdsm01crudclientes.dto.ClientDTO;
 import com.tyandrerboldt.bdsm01crudclientes.entities.Client;
 import com.tyandrerboldt.bdsm01crudclientes.repositories.ClientRepository;
+import com.tyandrerboldt.bdsm01crudclientes.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ClientService {
@@ -20,6 +21,13 @@ public class ClientService {
 	public Page<ClientDTO> findAllPaged(PageRequest pageRequest){
 		Page<Client> clients = clientRepository.findAll(pageRequest);		
 		return clients.map(client -> new ClientDTO(client));
+	}
+
+	@Transactional(readOnly = true)
+	public ClientDTO findById(Long clientId) {
+		Client client = clientRepository.findById(clientId)
+				.orElseThrow(() -> new ResourceNotFoundException("Client not found!"));
+		return new ClientDTO(client);
 	}
 	
 }
