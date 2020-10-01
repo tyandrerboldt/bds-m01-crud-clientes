@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +48,18 @@ public class ClientResource {
 	public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO clientDTO){
 		ClientDTO newClientDTO = clientService.insert(clientDTO);
 		return ResponseEntity.ok().body(newClientDTO);
+	}
+
+	@PutMapping("/{clientId}")
+	public ResponseEntity<ClientDTO> update(@PathVariable Long clientId,@RequestBody ClientDTO clientDTO){
+		ClientDTO newClientDTO = clientService.update(clientId, clientDTO);
+		return ResponseEntity.ok().body(newClientDTO);
+	}
+	
+	@DeleteMapping("/{clientId}")
+	public ResponseEntity<ClientDTO> delete(@PathVariable Long clientId){
+		clientService.delete(clientId);
+		return ResponseEntity.noContent().build();
 	}
 	
 }
