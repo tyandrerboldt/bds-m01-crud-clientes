@@ -1,9 +1,8 @@
 package com.tyandrerboldt.bdsm01crudclientes.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +17,9 @@ public class ClientService {
 	private ClientRepository clientRepository;
 	
 	@Transactional(readOnly = true)
-	public List<ClientDTO> findAll(){
-		List<Client> clients = clientRepository.findAll();
-		List<ClientDTO> clientsDTO = clients.stream()
-				.map(client -> new ClientDTO(client))
-				.collect(Collectors.toList());
-		return clientsDTO;
+	public Page<ClientDTO> findAllPaged(PageRequest pageRequest){
+		Page<Client> clients = clientRepository.findAll(pageRequest);		
+		return clients.map(client -> new ClientDTO(client));
 	}
 	
 }
